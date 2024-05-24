@@ -1,48 +1,57 @@
+import tkinter as tk
+from tkinter import ttk
+
 expenses = {}
 
-def add_expense(category, amount):
+def add_expense():
+    category = category_entry.get()
+    amount = float(amount_entry.get())
     if category in expenses:
         expenses[category] += amount
     else:
         expenses[category] = amount
+    update_expenses()
 
-def delete_expense(category):
+def delete_expense():
+    category = category_entry.get()
     if category in expenses:
         del expenses[category]
-        print("Витрата видалена!")
-    else:
-        print("Цієї категорії не існує.")
+    update_expenses()
 
-def view_expenses():
-    if not expenses:
-        print("Витрат немає.")
-    else:
-        for category, amount in expenses.items():
-            print(f"{category}: {amount}")
+def update_expenses():
+    listbox.delete(0, tk.END)
+    for category, amount in expenses.items():
+        listbox.insert(tk.END, f"{category}: {amount}")
 
-while True:
-    print("\n1. Додати витрату")
-    print("2. Переглянути витрати")
-    if expenses:
-        print("3. Видалити витрату")
-    print("4. Вийти")
-    choice = input("Виберіть опцію: ")
+root = tk.Tk()
+root.title("Expense Tracker")
 
-    if choice == '1':
-        category = input("Введіть категорію витрати: ")
-        amount = float(input("Введіть суму витрати: "))
-        add_expense(category, amount)
-        print("Витрата додана!")
+style = ttk.Style()
+style.configure("TButton", padding=10, font=("Arial", 12))
+style.configure("TEntry", padding=10, font=("Arial", 12))
+style.configure("TLabel", font=("Arial", 12))
 
-    elif choice == '2':
-        view_expenses()
+category_label = ttk.Label(root, text="Category:")
+category_label.pack()
 
-    elif choice == '3' and expenses:
-        category = input("Введіть категорію витрати для видалення: ")
-        delete_expense(category)
+category_entry = ttk.Entry(root)
+category_entry.pack()
 
-    elif choice == '4':
-        break
+amount_label = ttk.Label(root, text="Amount:")
+amount_label.pack()
 
-    else:
-        print("Невірний вибір, спробуйте ще раз.")
+amount_entry = ttk.Entry(root)
+amount_entry.pack()
+
+add_button = ttk.Button(root, text="Add Expense", command=add_expense)
+add_button.pack()
+
+delete_button = ttk.Button(root, text="Delete Expense", command=delete_expense)
+delete_button.pack()
+
+listbox = tk.Listbox(root)
+listbox.pack()
+
+update_expenses()
+
+root.mainloop()
