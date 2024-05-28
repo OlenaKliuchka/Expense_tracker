@@ -25,32 +25,40 @@ def update_expenses():
 
 root = tk.Tk()
 root.title("Expense Tracker")
+root.geometry("400x400")
 
 style = ttk.Style()
-style.configure("TButton", padding=10, font=("Arial", 12))
-style.configure("TEntry", padding=10, font=("Arial", 12))
 style.configure("TLabel", font=("Arial", 12))
+style.configure("TButton", font=("Arial", 12))
+style.configure("TEntry", font=("Arial", 12))
 
-category_label = ttk.Label(root, text="Category:")
-category_label.pack()
+main_frame = ttk.Frame(root, padding="20")
+main_frame.pack(fill=tk.BOTH, expand=True)
 
-category_entry = ttk.Entry(root)
-category_entry.pack()
+category_label = ttk.Label(main_frame, text="Category:")
+category_label.grid(row=0, column=0, padx=10, pady=5, sticky=tk.W)
 
-amount_label = ttk.Label(root, text="Amount:")
-amount_label.pack()
+category_entry = ttk.Entry(main_frame)
+category_entry.grid(row=0, column=1, padx=10, pady=5)
 
-amount_entry = ttk.Entry(root)
-amount_entry.pack()
+amount_label = ttk.Label(main_frame, text="Amount:")
+amount_label.grid(row=1, column=0, padx=10, pady=5, sticky=tk.W)
 
-add_button = ttk.Button(root, text="Add Expense", command=add_expense)
-add_button.pack()
+amount_entry = ttk.Entry(main_frame)
+amount_entry.grid(row=1, column=1, padx=10, pady=5)
 
-delete_button = ttk.Button(root, text="Delete Expense", command=delete_expense)
-delete_button.pack()
+add_button = ttk.Button(main_frame, text="Add Expense", command=add_expense)
+add_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky=tk.EW)
 
-listbox = tk.Listbox(root)
-listbox.pack()
+delete_button = ttk.Button(main_frame, text="Delete Expense", command=delete_expense)
+delete_button.grid(row=3, column=0, columnspan=2, padx=10, pady=5, sticky=tk.EW)
+
+listbox = tk.Listbox(main_frame)
+listbox.grid(row=4, column=0, columnspan=2, padx=10, pady=5, sticky=tk.NSEW)
+
+scrollbar = ttk.Scrollbar(main_frame, orient=tk.VERTICAL, command=listbox.yview)
+scrollbar.grid(row=4, column=2, sticky=tk.NS)
+listbox.config(yscrollcommand=scrollbar.set)
 
 update_expenses()
 
